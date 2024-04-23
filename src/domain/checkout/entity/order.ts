@@ -13,6 +13,11 @@ export default class Order {
     this.validate();
   }
 
+  changeCustomer(customerId: string): void {
+    this._customerId = customerId
+    this.validate()
+  }
+
   get id(): string {
     return this._id;
   }
