@@ -119,4 +119,70 @@ describe("Order repository test", () => {
       ],
     });
   });
+
+  it("Should find an order", async () => {
+    const customerRepository = new CustomerRepository();
+    const customer = new Customer("123", "Customer 1");
+    const address = new Address("Street 1", 1, "Zipcode 1", "City 1");
+    customer.changeAddress(address);
+    await customerRepository.create(customer);
+
+    const productRepository = new ProductRepository();
+    const product = new Product("123", "Product 1", 10);
+    await productRepository.create(product);
+
+    const orderItem = new OrderItem(
+      "1",
+      product.name,
+      product.price,
+      product.id,
+      2
+    );
+
+    const order = new Order("123", "123", [orderItem]);
+
+    const orderRepository = new OrderRepository();
+    await orderRepository.create(order);
+
+    const newOrder = await orderRepository.find(order.id);
+
+    expect(newOrder).toEqual(order)
+  })
+
+  it("Should find all orders", async () => {
+    const customerRepository = new CustomerRepository();
+    const customer = new Customer("123", "Customer 1");
+    const address = new Address("Street 1", 1, "Zipcode 1", "City 1");
+    customer.changeAddress(address);
+    await customerRepository.create(customer);
+
+    const productRepository = new ProductRepository();
+    const product = new Product("123", "Product 1", 10);
+    await productRepository.create(product);
+
+    const orderItem = new OrderItem(
+      "1",
+      product.name,
+      product.price,
+      product.id,
+      2
+    );
+
+    const orderItem2 = new OrderItem(
+      "2",
+      product.name,
+      product.price,
+      product.id,
+      4
+    );
+    const order = new Order("123", "123", [orderItem]);
+    const order2 = new Order("124", "123", [orderItem2]);
+    const orderRepository = new OrderRepository();
+    await orderRepository.create(order);
+    await orderRepository.create(order2);
+
+    const orders = await orderRepository.findAll();
+
+    expect(orders).toEqual([order, order2]);
+  })
 });
