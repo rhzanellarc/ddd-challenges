@@ -18,6 +18,14 @@ export default class Order {
     this.validate()
   }
 
+  addItem(orderItem: OrderItem): void {
+    if(this._items === undefined) {
+      this._items = []
+    }
+    this._items.push(orderItem)
+    this.validate()
+  }
+
   get id(): string {
     return this._id;
   }

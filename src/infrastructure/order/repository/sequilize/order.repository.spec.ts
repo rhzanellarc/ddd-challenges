@@ -95,6 +95,16 @@ describe("Order repository test", () => {
     await customerRepository.create(customer2);
 
     order.changeCustomer(customer2.id)
+
+    const orderItem2 = new OrderItem(
+      "2",
+      product.name,
+      product.price,
+      product.id,
+      3
+    );
+
+    order.addItem(orderItem2);
     
     await orderRepository.update(order);
     
@@ -115,9 +125,18 @@ describe("Order repository test", () => {
           quantity: orderItem.quantity,
           order_id: "123",
           product_id: "123",
+        },
+        {
+          id: orderItem2.id,
+          name: orderItem2.name,
+          price: orderItem2.price,
+          quantity: orderItem2.quantity,
+          order_id: "123",
+          product_id: "123",
         }
       ],
     });
+    expect(orderModel.items).toHaveLength(2)
   });
 
   it("Should find an order", async () => {
